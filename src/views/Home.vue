@@ -1,14 +1,23 @@
 <script setup>
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import SelectCurrency from '@/components/SelectCurrency.vue'
 import SelectDate from '@/components/SelectDate.vue'
 
-const currencies = ["USD", "EUR", "RUB"]
+const loading = ref(true)
+const rates = ref([])
 const currency = ref("USD")
 const date = ref(new Date())
+const currencies = computed(() => rates.value.map(r => r.Currency))
+
+fetch(`http://localhost:8080/api/rates`)
+  .then(r => r.json())
+  .then(d => {
+    rates.value = d
+    loading.value = false
+  })
 </script>
 
 <template>
-  <SelectCurrency :currencies="currencies" v-model:currency="currency"/>
+  <SelectCurrency v-if="!loading" :currencies="currencies" v-model:currency="currency"/>
   <SelectDate v-model:date="date"/>
 </template>
