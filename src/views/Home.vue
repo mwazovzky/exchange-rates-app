@@ -10,5 +10,5 @@ const date = ref(new Date())
 
 <template>
   <SelectCurrency :currencies="currencies" v-model:currency="currency"/>
-  <SelectDate :date="date"/>
+  <SelectDate v-model:date="date"/>
 </template>
