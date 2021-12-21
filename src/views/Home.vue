@@ -1,5 +1,6 @@
 <script setup>
-import { computed, ref } from 'vue'
+import moment from 'moment'
+import { computed, ref, watch } from 'vue'
 import SelectCurrency from '@/components/SelectCurrency.vue'
 import SelectDate from '@/components/SelectDate.vue'
 import ShowRate from '@/components/ShowRate.vue'
@@ -11,13 +12,22 @@ const date = ref(new Date())
 
 const currencies = computed(() => rates.value.map(r => r.Currency))
 const rate = computed(() => rates.value.find(r => r.Currency == currency.value))
+const dateString = computed(() => moment(date.value).format('DD/MM/YYYY'))
 
-fetch(`http://localhost:8080/api/rates`)
-  .then(r => r.json())
-  .then(d => {
-    rates.value = d
-    loading.value = false
-  })
+watch(dateString, () => fetchRates())
+
+fetchRates()
+
+function fetchRates() {
+  const url = `http://localhost:8080/api/rates?date=${dateString.value}`
+  fetch(url)
+    .then(r => r.json())
+    .then(d => {
+      rates.value = d
+      loading.value = false
+    })
+}
+
 </script>
 
 <template>
