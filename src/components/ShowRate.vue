@@ -6,7 +6,7 @@ const props = defineProps({
 
 <template>
   <h1>Exchange Rate</h1>
-  <div class="currency">{{ rate.Currency }}</div>
+  <div class="currency">{{ rate.CharCode }}</div>
   <div class="value">{{ rate.Value }}</div>
 </template>
 

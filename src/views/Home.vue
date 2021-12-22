@@ -10,8 +10,8 @@ const rates = ref([])
 const currency = ref("USD")
 const date = ref(new Date())
 
-const currencies = computed(() => rates.value.map(r => r.Currency))
-const rate = computed(() => rates.value.find(r => r.Currency == currency.value))
+const currencies = computed(() => rates.value.map(r => r.CharCode))
+const rate = computed(() => rates.value.find(r => r.CharCode == currency.value))
 const dateString = computed(() => moment(date.value).format('DD/MM/YYYY'))
 
 watch(dateString, () => fetchRates())
@@ -27,7 +27,6 @@ function fetchRates() {
       loading.value = false
     })
 }
-
 </script>
 
 <template>
